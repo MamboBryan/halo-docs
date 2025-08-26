@@ -44,5 +44,10 @@
         "href": "https://github.com/bizilabs/halo"
       }
     ]
+  },
+  "integrations": {
+    "posthog": {
+      "apiKey": "phc_zR4mMQ92puu8cc9jcP7ZpvtkJtQes7zLzwCCq5IeBMb"
+    }
   }
 }
