@@ -1,0 +1,175 @@
+---
+title: Vary
+icon: bolt
+iconType: solid
+description: "Build responsive apps with compose"
+---
+
+<img
+  className="block dark:hidden"
+  src="/images/tools/vary/vary-dark.svg"
+  alt="Hero Light"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/tools/vary/vary-light.svg"
+  alt="Hero Dark"
+/>
+
+## About
+
+> **`Vary`** is a lightweight, intuitive **responsive** layout library for Compose
+
+It helps you effortlessly adapt your UI to **different screen sizes** like _phones_, _tablets_, and _desktops_ using a clean, Kotlin-native DSL. Whether it's switching entire UI layouts or just tweaking a single values, `Vary` provides a simple and performant way to build fully responsive interfaces.
+
+## Install
+
+Add the dependency to the `dependencies` block of your `build.gradle.kts` file in your `commonMain` source set.
+
+<Tabs>
+  <Tab title="catalogs">
+  <Steps>
+    <Step title="Step 1">
+    Add the version in your `/gradle/libs.versions.toml` file under versions
+      ```toml libs.versions.toml
+      [versions]
+      vary = "latest_version"
+      ```
+    </Step>
+    <Step title="Step 2">
+    Add the library in your `/gradle/libs.versions.toml` file under libraries
+    ```toml libs.versions.toml
+    [libraries]
+    vary = { group = "org.bizilabs.vary", name="vary", version.ref = "vary" }
+    ```
+    </Step>
+    <Step title="Step 3">
+        Add the library to the `dependencies` block of your `build.gradle.kts` file in your `commonMain` source set.
+        ```kotlin build.gradle.kts
+        commonMain.dependencies {
+            implementation(libs.vary)
+        }
+        ```
+    </Step>
+    <Step title="Step 4">
+        Sync project to continue
+    </Step>
+  </Steps>
+  </Tab>
+  <Tab title="gradle">
+      Add the library to the `dependencies` block of your `build.gradle.kts` file in your `commonMain` source set.
+      ```kotlin build.gradle.kts
+      commonMain.dependencies {
+          implementation("org.bizilabs.vary:vary:${latest_version}")
+      }
+      ```
+  </Tab>
+</Tabs>
+
+## Setup
+To enable screen size detection, you only need to wrap your root composable with the `Vary` provider. This should be done once at the top level of your application.
+
+```kotlin App.kt
+import org.bizilabs.vary.Vary // Make sure to import
+
+@Composable
+fun App() {
+    YourTheme {
+        Vary {
+            // Your app's content, e.g., navigation, screens, etc.
+        }
+    }
+}
+```
+
+<Accordion title="Make it yours">
+    Under the hood `Vary` calls `LocalWindowInfo.current.containerSize.width` to get the width, but you can provide your own implementation
+
+   ```kotlin vary.kt
+    Vary(
+      width = // your custom implementation
+    ){
+      // your content goes here
+    }
+  ```
+</Accordion>
+
+## Usage
+The library provides two main functions all names `vary` for switching UI layouts and for selecting values.
+
+### Values
+Use this to select any non-composable value like a Dp, Color, Int, Modifier, etc. The default (xs) value is a mandatory first parameter.
+
+```kotlin
+val padding = vary(
+      xs = 16.dp // Default value
+    ){
+        md { 24.dp }
+        lg { 32.dp }
+    }
+
+Box(modifier = Modifier.padding(padding))
+
+// with default only
+val paddi = vary(xs = 16.dp)
+
+Box(modifier = Modifier.padding(paddi))
+
+```
+<Note>The lambda is not mandatory and it will default to `xs` incase no other size is declared </Note>
+
+### Layouts
+Use this when you need to render completely different composables for different screen sizes. The default (xs) case is provided as a mandatory trailing lambda.
+
+```kotlin
+vary({
+    // Optional overrides for other breakpoints
+    md {
+        Row(modifier = Modifier.padding(24.dp)) {
+            // ...  content for medium screens
+        }
+    }
+    lg {
+        Row(modifier = Modifier.padding(32.dp)) {
+            // ... content for large screens
+        }
+    }
+}) {
+    // Default (xs) layout
+    Column(modifier = Modifier.padding(16.dp)) {
+        // ... Column content
+    }
+}
+
+// with default only
+vary {
+  Column(modifier = Modifier.padding(16.dp)) {
+        // ... xs content
+  }
+}
+```
+## Sizes
+`Vary` provides the following sizes
+
+| Name | Label | Breakpoint |
+|:---|:---:|---:|
+|ExtraSmall| xs | 0|
+|Small | sm | 640|
+|Medium| md | 768|
+|Large| lg | 1024|
+|ExtraLarge| xl | 1280|
+|ExtraExtraLarge| xxl|      1536|
+
+
+## More
+`Vary` is an open source library and we're always looking for ways to improve it, you can view more by clicking the link below.
+
+<Card
+      title="Vary"
+      icon="github"
+      href="https://github.com/bizilabs/vary"
+      arrow="true"
+      cta="Contribute"
+    >
+        Build responsive apps with compose
+    </Card>
